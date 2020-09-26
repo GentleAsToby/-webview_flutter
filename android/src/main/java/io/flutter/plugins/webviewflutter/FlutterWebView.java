@@ -65,7 +65,6 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
 
       final WebView newWebView = new WebView(view.getContext());
       newWebView.setWebViewClient(webViewClient);
-	  newWebView.getSettings().setUseWideViewPort(true);
 
       final WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
       transport.setWebView(newWebView);
@@ -105,7 +104,8 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
 
     flutterWebViewClient = new FlutterWebViewClient(methodChannel);
     applySettings((Map<String, Object>) params.get("settings"));
-
+    webView.setInitialScale(100);
+	  
     if (params.containsKey(JS_CHANNEL_NAMES_FIELD)) {
       registerJavaScriptChannelNames((List<String>) params.get(JS_CHANNEL_NAMES_FIELD));
     }
