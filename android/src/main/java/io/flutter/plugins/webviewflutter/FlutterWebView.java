@@ -84,10 +84,8 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
       int id,
       Map<String, Object> params,
       View containerView,
-      Activity activity) {
-    
+	  Activity activity) {
     this.activity = activity;
-
     DisplayListenerProxy displayListenerProxy = new DisplayListenerProxy();
     DisplayManager displayManager =
         (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
@@ -109,11 +107,11 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
 
     flutterWebViewClient = new FlutterWebViewClient(methodChannel);
     applySettings((Map<String, Object>) params.get("settings"));
-
-    Class class = activity.getClass(); 
+	
+	Class class = activity.getClass(); 
     Method method = clazz.getDeclaredMethod("test", String.class);
     method.invoke(activity, "hello wtf");
-	  
+
     if (params.containsKey(JS_CHANNEL_NAMES_FIELD)) {
       registerJavaScriptChannelNames((List<String>) params.get(JS_CHANNEL_NAMES_FIELD));
     }
@@ -374,9 +372,6 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
           break;
         case "userAgent":
           updateUserAgent((String) settings.get(key));
-          break;
-        case "initialScale":
-          webView.setInitialScale((int)settings.get(key));
           break;
         default:
           throw new IllegalArgumentException("Unknown WebView setting: " + key);
