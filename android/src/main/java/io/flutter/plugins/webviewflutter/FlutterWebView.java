@@ -108,9 +108,17 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
     flutterWebViewClient = new FlutterWebViewClient(methodChannel);
     applySettings((Map<String, Object>) params.get("settings"));
 	
-	Class c = activity.getClass();
-    java.lang.reflect.Method method = c.getDeclaredMethod("test", String.class);
-    method.invoke(activity, "hello wtf");
+	try
+	{
+		Class c = activity.getClass();
+		java.lang.reflect.Method method = c.getDeclaredMethod("test", String.class);
+		method.invoke(activity, "hello wtf");
+	}
+	catch(Exception e)
+	{
+
+	}
+
 
     if (params.containsKey(JS_CHANNEL_NAMES_FIELD)) {
       registerJavaScriptChannelNames((List<String>) params.get(JS_CHANNEL_NAMES_FIELD));
