@@ -19,8 +19,6 @@ public class WebViewFlutterPlugin implements FlutterPlugin {
 
   private FlutterCookieManager flutterCookieManager;
 
-  public static Activity activity;
-
   /**
    * Add an instance of this to {@link io.flutter.embedding.engine.plugins.PluginRegistry} to
    * register it.
@@ -50,7 +48,6 @@ public class WebViewFlutterPlugin implements FlutterPlugin {
             "plugins.flutter.io/webview",
             new WebViewFactory(registrar.messenger(), registrar.view(), registrar.activity()));
     new FlutterCookieManager(registrar.messenger());
-    
   }
 
   @Override
