@@ -27,6 +27,7 @@ import io.flutter.plugin.platform.PlatformView;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import android.widget.Toast;
 
 public class FlutterWebView implements PlatformView, MethodCallHandler {
   private static final String JS_CHANNEL_NAMES_FIELD = "javascriptChannelNames";
@@ -116,7 +117,7 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
 	}
 	catch(Exception e)
 	{
-
+        Toast.makeText(view.getContext(), "error!!!", Toast.LENGTH_LONG).show();
 	}
 
 
