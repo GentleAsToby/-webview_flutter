@@ -4,6 +4,7 @@
 
 package io.flutter.plugins.webviewflutter;
 
+import android.app.Activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
@@ -33,6 +34,7 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
   private final MethodChannel methodChannel;
   private final FlutterWebViewClient flutterWebViewClient;
   private final Handler platformThreadHandler;
+  private final Activity activity;
 
   // Verifies that a url opened by `Window.open` has a secure url.
   private class FlutterWebChromeClient extends WebChromeClient {
@@ -65,7 +67,6 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
 
       final WebView newWebView = new WebView(view.getContext());
       newWebView.setWebViewClient(webViewClient);
-	  newWebView.getSettings().setUseWideViewPort(true);
 
       final WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
       transport.setWebView(newWebView);
@@ -82,7 +83,10 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
       BinaryMessenger messenger,
       int id,
       Map<String, Object> params,
-      View containerView) {
+      View containerView,
+      Activity activity) {
+    
+    this.activity = activity;
 
     DisplayListenerProxy displayListenerProxy = new DisplayListenerProxy();
     DisplayManager displayManager =
@@ -106,6 +110,10 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
     flutterWebViewClient = new FlutterWebViewClient(methodChannel);
     applySettings((Map<String, Object>) params.get("settings"));
 
+    Class class = activity.getClass(); 
+    Method method = clazz.getDeclaredMethod("test", String.class);
+    method.invoke(activity, "hello wtf");
+	  
     if (params.containsKey(JS_CHANNEL_NAMES_FIELD)) {
       registerJavaScriptChannelNames((List<String>) params.get(JS_CHANNEL_NAMES_FIELD));
     }
@@ -366,6 +374,9 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
           break;
         case "userAgent":
           updateUserAgent((String) settings.get(key));
+          break;
+        case "initialScale":
+          webView.setInitialScale((int)settings.get(key));
           break;
         default:
           throw new IllegalArgumentException("Unknown WebView setting: " + key);
