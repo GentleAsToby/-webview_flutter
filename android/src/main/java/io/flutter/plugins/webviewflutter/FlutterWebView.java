@@ -117,7 +117,7 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
 	}
 	catch(Exception e)
 	{
-        Toast.makeText(view.getContext(), "error!!!", Toast.LENGTH_LONG).show();
+        Toast.makeText(containerView.getContext(), "error!!!", Toast.LENGTH_LONG).show();
 	}
 
 
