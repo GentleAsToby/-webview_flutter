@@ -4,6 +4,7 @@
 
 package io.flutter.plugins.webviewflutter;
 
+import java.lang.reflect.InvocationTargetException;
 import android.app.Activity;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -109,18 +110,6 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
     flutterWebViewClient = new FlutterWebViewClient(methodChannel);
     applySettings((Map<String, Object>) params.get("settings"));
 	
-	try
-	{
-		Class c = activity.getClass();
-		java.lang.reflect.Method method = c.getDeclaredMethod("test", String.class);
-		method.invoke(activity, "hello wtf");
-	}
-	catch(Exception e)
-	{
-        Toast.makeText(containerView.getContext(), "error!!!", Toast.LENGTH_LONG).show();
-	}
-
-
     if (params.containsKey(JS_CHANNEL_NAMES_FIELD)) {
       registerJavaScriptChannelNames((List<String>) params.get(JS_CHANNEL_NAMES_FIELD));
     }
@@ -134,6 +123,29 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
       String url = (String) params.get("initialUrl");
       webView.loadUrl(url);
     }
+
+    try
+	  {
+      if(activity != null)
+      {
+        int instanceId = -1;
+        if (params.containsKey("instanceId")) {
+          instanceId = (int) params.get("instanceId");
+        }
+
+	      Class c = activity.getClass();
+		    java.lang.reflect.Method method = c.getDeclaredMethod("FlutterWebViewInit", new Class[] {WebView.class, int.class});
+		    method.invoke(activity, new Object[] {webView, instanceId});
+      }
+	  }
+    catch (InvocationTargetException e) {
+			Throwable t = e.getTargetException();// 获取目标异常
+      Toast.makeText(context, t.getClass().getSimpleName() + "#" + t.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+		}
+	  catch(Exception e)
+	  {
+      Toast.makeText(context, e.getClass().getSimpleName() + "#" + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+	  }
   }
 
   @Override

@@ -6,6 +6,7 @@ package io.flutter.plugins.webviewflutter;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.BinaryMessenger;
+import android.app.Activity;
 
 /**
  * Java platform implementation of the webview_flutter plugin.
@@ -18,6 +19,8 @@ import io.flutter.plugin.common.BinaryMessenger;
 public class WebViewFlutterPlugin implements FlutterPlugin {
 
   private FlutterCookieManager flutterCookieManager;
+
+  public static Activity activity = null;
 
   /**
    * Add an instance of this to {@link io.flutter.embedding.engine.plugins.PluginRegistry} to
@@ -46,7 +49,7 @@ public class WebViewFlutterPlugin implements FlutterPlugin {
         .platformViewRegistry()
         .registerViewFactory(
             "plugins.flutter.io/webview",
-            new WebViewFactory(registrar.messenger(), registrar.view(), registrar.activity()));
+            new WebViewFactory(registrar.messenger(), registrar.view(), activity));
     new FlutterCookieManager(registrar.messenger());
   }
 
@@ -58,7 +61,7 @@ public class WebViewFlutterPlugin implements FlutterPlugin {
         .getPlatformViewsController()
         .getRegistry()
         .registerViewFactory(
-            "plugins.flutter.io/webview", new WebViewFactory(messenger, /*containerView=*/ null, null));
+            "plugins.flutter.io/webview", new WebViewFactory(messenger, /*containerView=*/ null, activity));
     flutterCookieManager = new FlutterCookieManager(messenger);
   }
 
@@ -67,7 +70,7 @@ public class WebViewFlutterPlugin implements FlutterPlugin {
     if (flutterCookieManager == null) {
       return;
     }
-
+    
     flutterCookieManager.dispose();
     flutterCookieManager = null;
   }

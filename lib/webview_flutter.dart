@@ -154,6 +154,7 @@ class WebView extends StatefulWidget {
     this.debuggingEnabled = false,
     this.gestureNavigationEnabled = false,
     this.userAgent,
+    this.instanceId,
     this.initialMediaPlaybackPolicy =
         AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
   })  : assert(javascriptMode != null),
@@ -321,6 +322,9 @@ class WebView extends StatefulWidget {
   /// By default `userAgent` is null.
   final String userAgent;
 
+  /// only for android use
+  final int instanceId;
+
   /// Which restrictions apply on automatic media playback.
   ///
   /// This initial value is applied to the platform's webview upon creation. Any following
@@ -388,12 +392,12 @@ class _WebViewState extends State<WebView> {
 
 CreationParams _creationParamsfromWidget(WebView widget) {
   return CreationParams(
-    initialUrl: widget.initialUrl,
-    webSettings: _webSettingsFromWidget(widget),
-    javascriptChannelNames: _extractChannelNames(widget.javascriptChannels),
-    userAgent: widget.userAgent,
-    autoMediaPlaybackPolicy: widget.initialMediaPlaybackPolicy,
-  );
+      initialUrl: widget.initialUrl,
+      webSettings: _webSettingsFromWidget(widget),
+      javascriptChannelNames: _extractChannelNames(widget.javascriptChannels),
+      userAgent: widget.userAgent,
+      autoMediaPlaybackPolicy: widget.initialMediaPlaybackPolicy,
+      instanceId: widget.instanceId);
 }
 
 WebSettings _webSettingsFromWidget(WebView widget) {

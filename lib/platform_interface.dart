@@ -430,6 +430,7 @@ class CreationParams {
     this.webSettings,
     this.javascriptChannelNames,
     this.userAgent,
+    this.instanceId,
     this.autoMediaPlaybackPolicy =
         AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
   }) : assert(autoMediaPlaybackPolicy != null);
@@ -462,12 +463,14 @@ class CreationParams {
   /// When null the platform's webview default is used for the User-Agent header.
   final String userAgent;
 
+  final int instanceId;
+
   /// Which restrictions apply on automatic media playback.
   final AutoMediaPlaybackPolicy autoMediaPlaybackPolicy;
 
   @override
   String toString() {
-    return '$runtimeType(initialUrl: $initialUrl, settings: $webSettings, javascriptChannelNames: $javascriptChannelNames, UserAgent: $userAgent)';
+    return '$runtimeType(initialUrl: $initialUrl, settings: $webSettings, javascriptChannelNames: $javascriptChannelNames, UserAgent: $userAgent), instanceId: $instanceId';
   }
 }
 
